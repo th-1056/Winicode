@@ -42,4 +42,3 @@ internal sealed class DockWindow : Window
         Native.SetWindowPos(new WindowInteropHelper(this).EnsureHandle(),new nint(-1),(int)x,(int)y,(int)width,(int)height,0x10);
     }
 }
-

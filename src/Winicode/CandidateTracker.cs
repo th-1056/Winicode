@@ -64,4 +64,3 @@ internal sealed class CandidateTracker : IDisposable
     }
     public void Dispose(){stop.Cancel();wake.Set();if(thread!=Thread.CurrentThread)thread?.Join(1200);}
 }
-
