@@ -20,7 +20,10 @@ internal sealed class InputController : IDisposable
     internal InputController(IAppController app,Func<string,int,IReadOnlyList<UnicodeEntry>> searchProvider)
     {
         this.app=app;this.searchProvider=searchProvider;
-        dock.OpenRequested+=async()=>await Open(keyboard?.Snapshot());
+        dock.OpenRequested+=async()=>
+        {
+            if(!await Open(keyboard?.Snapshot()))Error?.Invoke("当前输入目标不可用，请切回可编辑的输入框后重试。");
+        };
         dock.ExitRequested+=app.ShowSettings;
         tracker.Changed+=anchor=>Application.Current.Dispatcher.BeginInvoke(()=>Update(anchor));
         expiry.Tick+=(_,_)=>{if(search==null&&!opening&&latest!=null&&!Fresh(latest)){latest=null;dock.Hide();}};

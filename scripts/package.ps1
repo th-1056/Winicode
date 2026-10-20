@@ -40,7 +40,7 @@ try {
     $publicDocs = @('README.md', 'LICENSE', 'THIRD-PARTY-NOTICES.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'SECURITY.md')
     foreach ($name in $publicDocs) { Copy-Item -LiteralPath (Join-Path $root $name) -Destination $published }
     [void](New-Item -ItemType Directory -Path (Join-Path $published 'docs'))
-    foreach ($name in @('user-guide.md', 'troubleshooting.md', 'privacy.md', 'architecture.md', 'release-checklist.md')) {
+    foreach ($name in @('user-guide.md', 'troubleshooting.md', 'privacy.md', 'architecture.md', 'release-checklist.md', 'validation-0.1.0-beta.1.md')) {
         Copy-Item -LiteralPath (Join-Path $root "docs/$name") -Destination (Join-Path $published 'docs')
     }
     # The redistributable's .NET notices ship alongside our notices, with their original text.
