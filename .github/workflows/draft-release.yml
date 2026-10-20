@@ -1,0 +1,74 @@
+name: Draft release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: draft-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: windows-2025
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
+        with:
+          dotnet-version: 10.0.402
+      - name: Require the reviewed version tag
+        run: |
+          . ./scripts/common.ps1
+          $version = Get-ReleaseVersion
+          if ($env:GITHUB_REF_TYPE -ne 'tag' -or $env:GITHUB_REF_NAME -cne "v$version") {
+            throw "Dispatch this workflow against the existing v$version tag. No tag is created here."
+          }
+          "WINICODE_VERSION=$version" >> $env:GITHUB_ENV
+      - name: Prepare verified portable Inno Setup 7 compiler
+        run: ./scripts/bootstrap-inno.ps1
+      - name: Static checks and source audit
+        run: |
+          ./scripts/test-packaging.ps1
+          ./scripts/export-source.ps1 -ListOnly
+      - name: Build, test and package (Inno Setup 7.1.0 required)
+        run: ./scripts/package.ps1 -RequiredInnoVersion 7.1.0
+      - name: Verify release assets
+        run: ./scripts/verify-release.ps1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: Winicode-${{ env.WINICODE_VERSION }}-win-x64
+          path: |
+            dist/Winicode-Setup-*-win-x64.exe
+            dist/Winicode-Portable-*-win-x64.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+      - name: Create a draft prerelease for maintainer review
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = "v$env:WINICODE_VERSION"
+          $existing = gh release view $tag --repo $env:GITHUB_REPOSITORY --json isDraft 2>$null
+          if ($LASTEXITCODE -eq 0) { throw 'A release already exists. Review it manually before replacing any assets.' }
+          # Refuse to publish automatically. Desktop acceptance remains a maintainer gate.
+          $notes = @"
+          Preparation build for Winicode $env:WINICODE_VERSION (Windows x64).
+
+          These test packages are unsigned and include .NET 10. Verify SHA256SUMS.txt before use.
+          CI validates build, console tests and package structure. A maintainer must add the actual
+          Windows/IME/upgrade/startup/uninstall test results and known limitations before publication.
+          See CHANGELOG.md and docs/release-checklist.md in the tagged source.
+          "@
+          [IO.File]::WriteAllText((Join-Path $pwd 'artifacts/release-notes.md'), $notes, [Text.UTF8Encoding]::new($false))
+          $assets = @("dist/Winicode-Setup-$env:WINICODE_VERSION-win-x64.exe", "dist/Winicode-Portable-$env:WINICODE_VERSION-win-x64.zip", 'dist/SHA256SUMS.txt')
+          gh release create $tag @assets --repo $env:GITHUB_REPOSITORY --draft --prerelease --verify-tag --target $env:GITHUB_SHA --title "Winicode $env:WINICODE_VERSION" --notes-file artifacts/release-notes.md
+          if ($LASTEXITCODE -ne 0) { throw 'Draft release creation failed.' }

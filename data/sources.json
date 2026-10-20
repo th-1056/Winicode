@@ -1,0 +1,38 @@
+{
+  "version": "18.0.0",
+  "status": "final",
+  "verifiedFrom": "https://www.unicode.org/Public/18.0.0/ucd/ReadMe.txt",
+  "downloadedAtUtc": "2026-10-20T10:58:28.5519160Z",
+  "license": "UNICODE LICENSE V3",
+  "files": [
+    {
+      "path": "UnicodeData.txt",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/UnicodeData.txt",
+      "sha256": "0736451de439ae7baf1425136617da495e09ee5afbe6e394374db7009ea08950"
+    },
+    {
+      "path": "DerivedName.txt",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/extracted/DerivedName.txt",
+      "sha256": "ac6cf808ea4ee29323031d5ba9449de13da51398a3f5ce401546d8fceb976df7"
+    },
+    {
+      "path": "NameAliases.txt",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/NameAliases.txt",
+      "sha256": "3d5cf5e468901b080cd99adf2230061b748083705fe633db43ac8b73ec7a13da"
+    },
+    {
+      "path": "ReadMe.txt",
+      "url": "https://www.unicode.org/Public/18.0.0/ucd/ReadMe.txt",
+      "sha256": "b0ea442f29dee90584aacd3665a6e1ce87ffc917a4d31f34e1916d2d6f7f9205"
+    },
+    {
+      "path": "LICENSE.txt",
+      "url": "https://www.unicode.org/license.txt",
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+    }
+  ],
+  "projectData": {
+    "provenance": "Project-curated Chinese mathematics search aliases and descriptions; these are not official Unicode names or translations.",
+    "path": "math-aliases.tsv"
+  }
+}

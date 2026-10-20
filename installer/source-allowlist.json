@@ -1,0 +1,16 @@
+{
+  "files": [
+    ".gitignore", ".gitattributes", "global.json", "Winicode.sln", "README.md", "LICENSE", "THIRD-PARTY-NOTICES.md", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md",
+    "docs/user-guide.md", "docs/troubleshooting.md", "docs/privacy.md", "docs/architecture.md", "docs/release-checklist.md", "docs/validation-0.1.0-beta.1.md",
+    "data/README.md", "data/ReadMe.txt", "data/sources.json", "data/LICENSE.txt", "data/UnicodeData.txt", "data/DerivedName.txt", "data/NameAliases.txt", "data/math-aliases.tsv",
+    "installer/Winicode.iss", "installer/source-allowlist.json", "installer/licenses/InnoSetup-LICENSE.txt",
+    "scripts/common.ps1", "scripts/build.ps1", "scripts/package.ps1", "scripts/verify-release.ps1", "scripts/verify-unicode.ps1", "scripts/download-unicode.ps1", "scripts/export-source.ps1", "scripts/test-packaging.ps1", "scripts/bootstrap-inno.ps1",
+    ".github/workflows/ci.yml", ".github/workflows/draft-release.yml"
+  ],
+  "trees": [
+    { "path": "src/Winicode", "extensions": [".cs", ".csproj", ".xaml", ".manifest", ".ico"] },
+    { "path": "tests/Winicode.Tests", "extensions": [".cs", ".csproj"] },
+    { "path": "tests/Winicode.TestHost", "extensions": [".cs", ".csproj"] },
+    { "path": "tests/desktop", "extensions": [".py", ".txt"] }
+  ]
+}

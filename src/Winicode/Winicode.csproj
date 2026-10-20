@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable><ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <StartupObject>Winicode.Program</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\Winicode.ico</ApplicationIcon>
+    <AssemblyName>Winicode</AssemblyName><RootNamespace>Winicode</RootNamespace>
+    <Version>0.1.0-beta.1</Version><AssemblyVersion>0.1.0.0</AssemblyVersion><FileVersion>0.1.0.0</FileVersion>
+    <Product>Winicode</Product><Title>Winicode</Title>
+    <Authors>Winicode contributors</Authors><Copyright>Copyright (c) 2026 Winicode contributors</Copyright>
+    <NoWarn>$(NoWarn);WFO0003</NoWarn><PublishTrimmed>false</PublishTrimmed>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\data\**\*" Link="data\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Assets\Winicode.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <InternalsVisibleTo Include="Winicode.Tests" /><InternalsVisibleTo Include="Winicode.TestHost" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,4 @@
+* text=auto eol=lf
+# Preserve the exact official bytes used by Unicode SHA-256 pins on every OS.
+data/** -text
+*.ico binary
