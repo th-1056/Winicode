@@ -5,7 +5,7 @@
 只要点击输入框后的U+，或输入内容后按下0，就可以打开检索面板查找并选择你想要任何Unicode字符。支持英文名称、码位和常用中文数学别名。
 
 ## 获取与运行
-[项目 Releases](https://github.com/th-1056/Winicode/releases）
+https://github.com/th-1056/Winicode/releases
 同时提供安装版本和便携版本，两种包均附带 .NET 运行库。
 
 安装后打开 Winicode，按首次引导进入输入测试。使用微软拼音输入时，点击候选栏右侧的 U+，或按 0 打开检索；输入名称或 `U+2200` 等码位后选择字符。
@@ -15,26 +15,12 @@
 
 ## 从源码构建
 
-使用 Windows x64、PowerShell 7 和稳定版 .NET 10 SDK。CI 固定 SDK **10.0.402**。脚本优先查找 `.tools/dotnet/dotnet.exe`，随后查找当前进程 PATH 中的 `dotnet.exe`。应用和测试控制台无需额外 NuGet 包；首次 restore/publish 可能需要联网获取框架包。
+使用 Windows x64、PowerShell 7 和 .NET 10 SDK。CI 固定 SDK **10.0.402**
 
 ```powershell
 pwsh -NoProfile -File .\scripts\test-packaging.ps1
 pwsh -NoProfile -File .\scripts\build.ps1
 ```
-
-`build.ps1` 校验 Unicode 哈希、构建应用及测试控制台，并执行测试控制台。项目的测试入口使用 `dotnet run`，执行失败会中止脚本。
-
-打包还需要 Inno Setup：首选 **7.1.0 x64**，本地兼容 **6.7+**。可运行 `scripts/bootstrap-inno.ps1`，校验固定 SHA-256 和签名后，使用官方便携模式准备编译器。构建脚本支持 `WINICODE_DOTNET` / `WINICODE_ISCC` 显式工具路径、项目内工具或当前进程 PATH；不会修改机器 PATH。
-
-```powershell
-pwsh -NoProfile -File .\scripts\bootstrap-inno.ps1
-pwsh -NoProfile -File .\scripts\package.ps1
-pwsh -NoProfile -File .\scripts\verify-release.ps1
-```
-
-打包脚本执行构建和控制台测试，然后发布 `win-x64` 自包含目录，显式关闭 trimming、单文件发布和 AOT，生成独立安装版与便携版标记、文件清单、EXE、ZIP 和 `SHA256SUMS.txt`。最终文件位于 `dist/`，暂存目录保留在 `artifacts/` 供核对。存在同名产物时脚本会停止，请先将旧产物移到独立位置。打包前应结束并行源码编辑。
-
-发布包保留原始 Unicode 许可及 .NET 许可。请使用含 `LICENSE.txt`、`ThirdPartyNotices.txt` 的官方 SDK 目录。工具的确切版本、提交、数据版本和未签名状态记录在包内 `release-manifest.json`。
 
 ## 文档与参与
 
